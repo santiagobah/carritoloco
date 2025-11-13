@@ -1,0 +1,154 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 448px;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    padding: 48px 40px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.google-logo {
+    width: 75px;
+    margin-bottom: 16px;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 400;
+    color: #202124;
+    margin: 0 0 8px;
+}
+
+p {
+    font-size: 16px;
+    color: #5f6368;
+    margin: 0 0 24px;
+}
+
+.input-group {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #1a73e8;
+}
+
+.forgot-link {
+    display: block;
+    text-align: left;
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 24px;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+.guest-info {
+    font-size: 14px;
+    color: #5f6368;
+    text-align: left;
+    margin-top: 32px;
+}
+
+.guest-info a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.guest-info a:hover {
+    text-decoration: underline;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+}
+
+.create-account-link {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.create-account-link:hover {
+    background-color: rgba(26, 115, 232, 0.04);
+}
+
+.next-button {
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.next-button:hover {
+    background-color: #1565c0;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    font-size: 12px;
+    color: #5f6368;
+    width: 100%;
+}
+
+.lang-selector select {
+    border: none;
+    background-color: transparent;
+    color: #5f6368;
+}
+
+.footer-links a {
+    color: #5f6368;
+    text-decoration: none;
+    margin-left: 16px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
