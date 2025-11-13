@@ -11,3 +11,9 @@ dist/
 
 # TypeScript
 *.tsbuildinfo
+
+
+# cada que avance más:
+# git add .
+# git commit -m "feat: agregado login con JWT"
+# git push
