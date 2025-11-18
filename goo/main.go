@@ -51,6 +51,7 @@ func main() {
 	http.HandleFunc("/api/products", productsHandler)
 	http.HandleFunc("/api/product", productHandler)
 	http.HandleFunc("/api/sales", salesHandler)
+	http.HandleFunc("/api/pos/add", handlers.AddProduct)
 
 	port := os.Getenv("PORT")
 	if port == "" {

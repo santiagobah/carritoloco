@@ -1,6 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import BackHomeButton from "@/app/reciclar/botonhome";
+
+async function addNewProduct(product: any) {
+  const res = await fetch("http://localhost:4001/api/pos/add", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(product),
+  });
+  return await res.json();
+}
 
 interface SaleItem {
   barcode: string;
@@ -41,7 +51,7 @@ export default function POSPage() {
             {
               barcode,
               name: data.name_pr,
-              price: 100, // puedes reemplazar esto si tu API devuelve precio
+              price: data.price ?? 100,
               qty: 1,
             },
           ];
@@ -50,7 +60,18 @@ export default function POSPage() {
         setItems(newItems);
         setTotal(newItems.reduce((sum, i) => sum + i.price * i.qty, 0));
       } else {
-        alert("Producto no encontrado");
+        const shouldCreate = confirm("Producto no encontrado. ¿Deseas crearlo?");
+        if (shouldCreate) {
+          await addNewProduct({
+            name: "Producto nuevo",
+            category: "Sin categoría",
+            barcode,
+            price: 0,
+            stock: 1,
+            person_id: 1,
+          });
+          alert("Producto creado. Escanéalo de nuevo.");
+        }
       }
 
       setBarcode("");
@@ -68,6 +89,12 @@ export default function POSPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 p-8">
+
+      {/* 🔙 BOTÓN HOME */}
+      <div className="mb-4">
+        <BackHomeButton />
+      </div>
+
       <h1 className="text-4xl font-bold text-green-600 mb-6 text-center">
         💳 Punto de Venta
       </h1>

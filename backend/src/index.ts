@@ -21,6 +21,10 @@ app.get("/", (req, res) => {
   res.send("API funcionando correctamente");
 });
 
+// para el hash de las contraseñas:
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+
 app.get("/api/products", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM products");

@@ -64,3 +64,35 @@ func GetProductByBarcode(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(p)
 }
+
+type NewProductRequest struct {
+	Name     string  `json:"name"`
+	Category string  `json:"category"`
+	Barcode  string  `json:"barcode"`
+	Price    float64 `json:"price"`
+	Stock    int     `json:"stock"`
+	PersonID int     `json:"person_id"`
+}
+
+func AddProduct(w http.ResponseWriter, r *http.Request) {
+	var req NewProductRequest
+	json.NewDecoder(r.Body).Decode(&req)
+
+	query := `
+        INSERT INTO products (name_pr, cat, barcode, price, stock, person_id)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING prod_id
+    `
+	var id int
+	err := db.DB.QueryRow(query, req.Name, req.Category, req.Barcode, req.Price, req.Stock, req.PersonID).Scan(&id)
+
+	if err != nil {
+		http.Error(w, "Error insertando producto", 500)
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]any{
+		"status":  "ok",
+		"prod_id": id,
+	})
+}
