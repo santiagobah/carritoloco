@@ -1,0 +1,94 @@
+-- ================================================
+-- CARRITO LOCO - SEED DATA
+-- Initial data for development and testing
+-- ================================================
+
+-- ================================================
+-- CATEGORIES
+-- ================================================
+INSERT INTO categor (name_cat, description) VALUES
+('Electrónica', 'Dispositivos electrónicos y gadgets'),
+('Accesorios', 'Accesorios para dispositivos'),
+('Fotografía', 'Cámaras y equipos fotográficos'),
+('Ropa', 'Prendas de vestir y moda'),
+('Hogar', 'Artículos para el hogar'),
+('Juguetes', 'Juguetes y entretenimiento'),
+('Deportes', 'Artículos deportivos'),
+('Belleza', 'Productos de belleza'),
+('Mascotas', 'Productos para mascotas'),
+('Libros', 'Libros y lectura'),
+('Automotriz', 'Accesorios automotrices'),
+('Tecnología', 'Tecnología y computación'),
+('Salud', 'Productos de salud'),
+('Alimentos', 'Alimentos y bebidas'),
+('Oficina', 'Artículos de oficina');
+
+-- ================================================
+-- DEMO USERS
+-- ================================================
+INSERT INTO personas (name_p, ap_pat, ap_mat, sell, buy) VALUES
+('Juan', 'Pérez', 'López', TRUE, TRUE),
+('María', 'Gómez', 'Ruiz', TRUE, TRUE),
+('Carlos', 'Hernández', 'Torres', TRUE, FALSE),
+('Ana', 'Martínez', 'Flores', FALSE, TRUE),
+('Luis', 'Rodríguez', 'Sánchez', TRUE, TRUE);
+
+-- Note: Passwords will be hashed when users register through the app
+-- These are placeholder entries - real passwords will be added via /api/auth/register
+
+-- ================================================
+-- PRODUCTS
+-- ================================================
+INSERT INTO products (name_pr, description, cat_id, person_id, price, stock, is_active) VALUES
+-- Electrónica
+('Laptop Gamer ASUS ROG', 'Laptop de alto rendimiento', 1, 1, 1299.99, 15, TRUE),
+('Smartphone Samsung S24', 'Smartphone última generación', 1, 2, 899.99, 25, TRUE),
+('Smart TV LG 55"', 'Televisor inteligente 4K', 1, 1, 699.99, 10, TRUE),
+('Tablet iPad Air', 'Tablet Apple 10.9"', 1, 1, 599.99, 20, TRUE),
+
+-- Accesorios
+('Audífonos Sony WH-1000XM5', 'Cancelación de ruido', 2, 2, 349.99, 30, TRUE),
+('Mouse Logitech MX Master', 'Mouse inalámbrico', 2, 1, 99.99, 50, TRUE),
+('Teclado Mecánico RGB', 'Teclado gaming', 2, 1, 149.99, 35, TRUE),
+
+-- Fotografía
+('Cámara Canon EOS R50', 'Cámara mirrorless', 3, 1, 899.99, 12, TRUE),
+('GoPro Hero 12', 'Cámara de acción 4K', 3, 1, 399.99, 18, TRUE),
+
+-- Ropa
+('Camiseta Nike Dri-FIT', 'Camiseta deportiva', 4, 2, 29.99, 80, TRUE),
+('Jeans Levi''s 501', 'Pantalón de mezclilla', 4, 2, 79.99, 50, TRUE),
+
+-- Hogar
+('Lámpara LED', 'Lámpara moderna', 5, 2, 49.99, 45, TRUE),
+('Cafetera Nespresso', 'Cafetera de cápsulas', 5, 1, 189.99, 20, TRUE),
+
+-- Deportes
+('Pelota Nike', 'Balón profesional', 7, 1, 39.99, 60, TRUE),
+('Yoga Mat Premium', 'Tapete antideslizante', 7, 2, 29.99, 70, TRUE),
+
+-- Tecnología
+('Router WiFi 6', 'Router alta velocidad', 12, 1, 149.99, 30, TRUE),
+('SSD Samsung 1TB', 'Disco sólido NVMe', 12, 1, 99.99, 50, TRUE);
+
+-- ================================================
+-- BARCODES
+-- ================================================
+INSERT INTO barcodes (prod_id, barcode) VALUES
+(1, '7501234567890'),
+(2, '7501234567891'),
+(3, '7501234567892'),
+(4, '7501234567893'),
+(5, '7501234567894'),
+(6, '7501234567895'),
+(7, '7501234567896'),
+(8, '7501234567897'),
+(9, '7501234567898'),
+(10, '7501234567899'),
+(11, '7501234567900'),
+(12, '7501234567901'),
+(13, '7501234567902'),
+(14, '7501234567903'),
+(15, '7501234567904'),
+(16, '7501234567905'),
+(17, '7501234567906');
