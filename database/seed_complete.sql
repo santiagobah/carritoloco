@@ -24,15 +24,15 @@ INSERT INTO roles (role_name, description, permissions) VALUES
 ('cashier', 'Cajero de punto de venta', '{"pos": true}'),
 ('inventory', 'Encargado de inventario', '{"inventory": true, "products": true}');
 
--- USER_PASS (password: "password123" - bcrypt will hash on registration)
--- These are just placeholders, real hashes generated on registration
-INSERT INTO user_pass (person_id, email, is_admin) VALUES
-(1, 'admin@carritoloco.com', TRUE),
-(2, 'juan.perez@carritoloco.com', FALSE),
-(3, 'maria.gomez@carritoloco.com', FALSE),
-(4, 'carlos.hernandez@carritoloco.com', FALSE),
-(5, 'ana.martinez@carritoloco.com', FALSE),
-(6, 'luis.rodriguez@carritoloco.com', FALSE);
+-- USER_PASS (password: "password123" - bcrypt hashed)
+-- Hash generated with bcrypt cost 10: password123
+INSERT INTO user_pass (person_id, email, password, is_admin) VALUES
+(1, 'admin@carrito.com', '$2a$10$rM8/8FKKvVZ6p7H5Y0QYXuJBxhYXGlN0x3qTfPYLgpQJXKxVvT7H6', TRUE),
+(2, 'manager@carrito.com', '$2a$10$rM8/8FKKvVZ6p7H5Y0QYXuJBxhYXGlN0x3qTfPYLgpQJXKxVvT7H6', FALSE),
+(3, 'cashier1@carrito.com', '$2a$10$rM8/8FKKvVZ6p7H5Y0QYXuJBxhYXGlN0x3qTfPYLgpQJXKxVvT7H6', FALSE),
+(4, 'cashier2@carrito.com', '$2a$10$rM8/8FKKvVZ6p7H5Y0QYXuJBxhYXGlN0x3qTfPYLgpQJXKxVvT7H6', FALSE),
+(5, 'inv1@carrito.com', '$2a$10$rM8/8FKKvVZ6p7H5Y0QYXuJBxhYXGlN0x3qTfPYLgpQJXKxVvT7H6', FALSE),
+(6, 'inv2@carrito.com', '$2a$10$rM8/8FKKvVZ6p7H5Y0QYXuJBxhYXGlN0x3qTfPYLgpQJXKxVvT7H6', FALSE);
 
 -- USER_ROLES
 INSERT INTO user_roles (person_id, role_id) VALUES
