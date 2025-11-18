@@ -1,0 +1,69 @@
+# CarritoLoco - Sistema POS y E-commerce
+
+# PostgreSQL Database
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: carritoloco-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: carritoloco
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema_complete.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/seed_complete.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    networks:
+      - carritoloco-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Go API
+  backend:
+    build:
+      context: ./goo
+      dockerfile: Dockerfile
+    container_name: carritoloco-backend
+    restart: always
+    environment:
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASS: postgres123
+      DB_NAME: carritoloco
+      DB_PORT: 5432
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - carritoloco-network
+
+  # Frontend Next.js
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: carritoloco-frontend
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - carritoloco-network
+
+networks:
+  carritoloco-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
