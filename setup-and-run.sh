@@ -76,6 +76,31 @@ echo "   - Descargando dependencias..."
 go get github.com/lib/pq 2>/dev/null || true
 go mod tidy
 
+# Create .env if it doesn't exist
+if [ ! -f ".env" ]; then
+    echo "   - Creando archivo .env con configuración por defecto..."
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        cat > .env << EOF
+DB_HOST=localhost
+DB_USER=$PGUSER
+DB_PASS=
+DB_NAME=carritoloco
+DB_PORT=5432
+EOF
+    else
+        # Linux
+        cat > .env << EOF
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASS=
+DB_NAME=carritoloco
+DB_PORT=5432
+EOF
+    fi
+    echo "   - Archivo .env creado"
+fi
+
 echo -e "${GREEN}✅ Dependencias de Go instaladas${NC}"
 echo ""
 
