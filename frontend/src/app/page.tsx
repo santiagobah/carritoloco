@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "@/contexts/SessionContext";
+import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart, User, LogIn, Package, Search, Menu, X, TrendingUp, Star } from "lucide-react";
 
 interface Product {
@@ -25,6 +26,7 @@ interface Category {
 
 export default function Home() {
   const { user } = useSession();
+  const { addToCart, getTotalItems } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -116,7 +118,7 @@ export default function Home() {
               <Link href="/carrito" className="relative">
                 <ShoppingCart className="w-6 h-6 text-gray-700 hover:text-orange-600 transition" />
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                  0
+                  {getTotalItems()}
                 </span>
               </Link>
             </nav>
@@ -189,7 +191,7 @@ export default function Home() {
                 onClick={() => setMenuOpen(false)}
               >
                 <ShoppingCart className="w-5 h-5" />
-                Carrito (0)
+                Carrito ({getTotalItems()})
               </Link>
             </nav>
           )}
@@ -321,7 +323,16 @@ export default function Home() {
                       {product.stock} disponibles
                     </span>
                   </div>
-                  <button className="w-full bg-orange-500 text-white py-2 md:py-3 rounded-lg font-bold hover:bg-orange-600 transition transform hover:scale-105 shadow">
+                  <button
+                    onClick={() => addToCart({
+                      prod_id: product.prod_id,
+                      name_pr: product.name_pr,
+                      sale_price: product.sale_price || product.cost_price,
+                      image_url: product.image_url,
+                      barcode: product.barcode
+                    })}
+                    className="w-full bg-orange-500 text-white py-2 md:py-3 rounded-lg font-bold hover:bg-orange-600 transition transform hover:scale-105 shadow"
+                  >
                     Agregar al Carrito
                   </button>
                 </div>
