@@ -1,0 +1,160 @@
+#!/bin/bash
+
+set -e  # Exit on error
+
+echo "🚀 Configurando CarritoLoco - Sistema POS Full-Stack"
+echo "=================================================="
+echo ""
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Step 1: Database setup
+echo -e "${YELLOW}📊 Paso 1: Configurando base de datos PostgreSQL...${NC}"
+echo ""
+
+# Check if PostgreSQL is running
+if ! pg_isready -q; then
+    echo -e "${RED}❌ PostgreSQL no está corriendo. Iniciando...${NC}"
+    sudo service postgresql start || {
+        echo -e "${RED}❌ Error: No se pudo iniciar PostgreSQL${NC}"
+        exit 1
+    }
+fi
+
+# Drop and create database
+echo "   - Eliminando base de datos anterior (si existe)..."
+psql -U postgres -c "DROP DATABASE IF EXISTS carritoloco;" 2>/dev/null || true
+
+echo "   - Creando base de datos 'carritoloco'..."
+psql -U postgres -c "CREATE DATABASE carritoloco;"
+
+echo "   - Aplicando schema completo..."
+psql -U postgres -d carritoloco -f database/schema_complete.sql > /dev/null
+
+echo "   - Cargando datos de prueba..."
+psql -U postgres -d carritoloco -f database/seed_complete.sql > /dev/null
+
+echo -e "${GREEN}✅ Base de datos configurada exitosamente${NC}"
+echo ""
+
+# Step 2: Install Go dependencies
+echo -e "${YELLOW}📦 Paso 2: Instalando dependencias de Go...${NC}"
+cd goo
+if [ ! -f "go.mod" ]; then
+    echo "   - Inicializando módulo Go..."
+    go mod init carritoloco
+fi
+
+echo "   - Descargando dependencias..."
+go get github.com/lib/pq
+go mod tidy
+
+echo -e "${GREEN}✅ Dependencias de Go instaladas${NC}"
+echo ""
+
+# Step 3: Install Frontend dependencies
+echo -e "${YELLOW}📦 Paso 3: Instalando dependencias del Frontend...${NC}"
+cd ../frontend
+
+if [ ! -d "node_modules" ]; then
+    echo "   - Instalando paquetes npm..."
+    npm install
+else
+    echo "   - node_modules ya existe, saltando instalación..."
+fi
+
+echo -e "${GREEN}✅ Dependencias del Frontend listas${NC}"
+echo ""
+
+# Step 4: Start services
+echo -e "${YELLOW}🚀 Paso 4: Iniciando servicios...${NC}"
+echo ""
+
+cd ..
+
+# Kill any existing processes on ports 8080 and 3000
+echo "   - Liberando puertos 8080 y 3000..."
+lsof -ti:8080 | xargs kill -9 2>/dev/null || true
+lsof -ti:3000 | xargs kill -9 2>/dev/null || true
+
+# Start Go backend in background
+echo "   - Iniciando backend Go en puerto 8080..."
+cd goo
+nohup go run main_complete.go > ../logs/backend.log 2>&1 &
+BACKEND_PID=$!
+echo $BACKEND_PID > ../logs/backend.pid
+cd ..
+
+# Wait for backend to start
+echo "   - Esperando que el backend inicie..."
+sleep 3
+
+# Check if backend is running
+if kill -0 $BACKEND_PID 2>/dev/null; then
+    echo -e "${GREEN}✅ Backend Go corriendo (PID: $BACKEND_PID)${NC}"
+else
+    echo -e "${RED}❌ Error: Backend no se pudo iniciar${NC}"
+    cat logs/backend.log
+    exit 1
+fi
+
+# Start Next.js frontend in background
+echo "   - Iniciando frontend Next.js en puerto 3000..."
+cd frontend
+nohup npm run dev > ../logs/frontend.log 2>&1 &
+FRONTEND_PID=$!
+echo $FRONTEND_PID > ../logs/frontend.pid
+cd ..
+
+echo -e "${GREEN}✅ Frontend Next.js corriendo (PID: $FRONTEND_PID)${NC}"
+echo ""
+
+# Wait for services to be ready
+echo -e "${YELLOW}⏳ Esperando que los servicios estén listos...${NC}"
+sleep 5
+
+# Step 5: Success message
+echo ""
+echo "=================================================="
+echo -e "${GREEN}🎉 ¡CarritoLoco está corriendo!${NC}"
+echo "=================================================="
+echo ""
+echo "📍 URLs:"
+echo "   🌐 Frontend:  http://localhost:3000"
+echo "   🔧 Backend:   http://localhost:8080"
+echo ""
+echo "👤 Usuarios de prueba (todos con password: 'password123'):"
+echo "   📧 admin@carrito.com     - Rol: Admin"
+echo "   📧 manager@carrito.com   - Rol: Gerente"
+echo "   📧 cashier1@carrito.com  - Rol: Cajero (Sucursal Centro)"
+echo "   📧 cashier2@carrito.com  - Rol: Cajero (Sucursal Norte)"
+echo "   📧 inv1@carrito.com      - Rol: Inventarios"
+echo ""
+echo "🏢 Sucursales disponibles:"
+echo "   - Centro (ID: 1)"
+echo "   - Norte (ID: 2)"
+echo "   - Sur (ID: 3)"
+echo ""
+echo "📦 Productos de prueba: 10 productos con códigos de barras"
+echo "🏭 Proveedores: 3 proveedores configurados"
+echo ""
+echo "🧪 Probar API del POS:"
+echo "   curl http://localhost:8080/api/pos/open-cash \\"
+echo "     -X POST -H 'Content-Type: application/json' \\"
+echo "     -d '{\"branch_id\":1,\"opened_by\":3,\"opening_cash\":1000.00}'"
+echo ""
+echo "📋 Ver inventario:"
+echo "   curl http://localhost:8080/api/inventory/by-branch?branch_id=1"
+echo ""
+echo "📊 Logs:"
+echo "   Backend:  tail -f logs/backend.log"
+echo "   Frontend: tail -f logs/frontend.log"
+echo ""
+echo "🛑 Para detener los servicios:"
+echo "   kill \$(cat logs/backend.pid) \$(cat logs/frontend.pid)"
+echo ""
+echo "=================================================="
