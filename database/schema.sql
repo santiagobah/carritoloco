@@ -1,9 +1,3 @@
--- ================================================
--- CARRITO LOCO - COMPLETE DATABASE SCHEMA
--- Full-stack POS System
--- ================================================
-
--- Drop tables if exist (correct order for FK constraints)
 DROP TABLE IF EXISTS sale_items CASCADE;
 DROP TABLE IF EXISTS sales CASCADE;
 DROP TABLE IF EXISTS barcodes CASCADE;
@@ -15,9 +9,6 @@ DROP TABLE IF EXISTS personal_data CASCADE;
 DROP TABLE IF EXISTS specific_personal_data CASCADE;
 DROP TABLE IF EXISTS personas CASCADE;
 
--- ================================================
--- PERSONAS (Users)
--- ================================================
 CREATE TABLE personas (
     person_id SERIAL PRIMARY KEY,
     name_p VARCHAR(50) NOT NULL,
@@ -28,9 +19,6 @@ CREATE TABLE personas (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- USER AUTHENTICATION
--- ================================================
 CREATE TABLE user_pass (
     person_id INT REFERENCES personas(person_id) ON DELETE CASCADE UNIQUE,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -39,9 +27,6 @@ CREATE TABLE user_pass (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- BANK INFORMATION
--- ================================================
 CREATE TABLE bank_person (
     person_id INT REFERENCES personas(person_id) ON DELETE CASCADE UNIQUE,
     num_card VARCHAR(20) NOT NULL,
@@ -49,9 +34,6 @@ CREATE TABLE bank_person (
     cvv VARCHAR(4)
 );
 
--- ================================================
--- PERSONAL DATA
--- ================================================
 CREATE TABLE specific_personal_data (
     data_id SERIAL PRIMARY KEY,
     street VARCHAR(100) NOT NULL,
@@ -67,9 +49,6 @@ CREATE TABLE personal_data (
     data_id INT REFERENCES specific_personal_data(data_id)
 );
 
--- ================================================
--- CATEGORIES
--- ================================================
 CREATE TABLE categor (
     cat_id SERIAL PRIMARY KEY,
     name_cat VARCHAR(50) NOT NULL UNIQUE,
@@ -77,9 +56,6 @@ CREATE TABLE categor (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- PRODUCTS
--- ================================================
 CREATE TABLE products (
     prod_id SERIAL PRIMARY KEY,
     name_pr VARCHAR(100) NOT NULL,
@@ -94,9 +70,6 @@ CREATE TABLE products (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- BARCODES
--- ================================================
 CREATE TABLE barcodes (
     barcode_id SERIAL PRIMARY KEY,
     prod_id INT REFERENCES products(prod_id) ON DELETE CASCADE,
@@ -104,9 +77,7 @@ CREATE TABLE barcodes (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- SALES
--- ================================================
+
 CREATE TABLE sales (
     sale_id SERIAL PRIMARY KEY,
     person_id INT REFERENCES personas(person_id) ON DELETE SET NULL,
@@ -116,9 +87,7 @@ CREATE TABLE sales (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- SALE ITEMS
--- ================================================
+
 CREATE TABLE sale_items (
     item_id SERIAL PRIMARY KEY,
     sale_id INT REFERENCES sales(sale_id) ON DELETE CASCADE,
@@ -130,9 +99,6 @@ CREATE TABLE sale_items (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- INDEXES FOR PERFORMANCE
--- ================================================
 CREATE INDEX idx_products_cat_id ON products(cat_id);
 CREATE INDEX idx_products_person_id ON products(person_id);
 CREATE INDEX idx_products_is_active ON products(is_active);
@@ -143,11 +109,6 @@ CREATE INDEX idx_sale_items_sale_id ON sale_items(sale_id);
 CREATE INDEX idx_sale_items_prod_id ON sale_items(prod_id);
 CREATE INDEX idx_user_pass_email ON user_pass(email);
 
--- ================================================
--- TRIGGERS
--- ================================================
-
--- Auto-update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -160,7 +121,6 @@ CREATE TRIGGER update_products_updated_at
 BEFORE UPDATE ON products
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Auto-calculate subtotal in sale_items
 CREATE OR REPLACE FUNCTION calculate_subtotal()
 RETURNS TRIGGER AS $$
 BEGIN

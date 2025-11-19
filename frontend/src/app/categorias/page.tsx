@@ -66,8 +66,7 @@ export default function CategoriasPage() {
       barcode: product.barcode
     });
 
-    // Feedback visual
-    alert(`✅ ${product.name_pr} agregado al carrito`);
+    alert(`${product.name_pr} agregado al carrito`);
   };
 
   return (
@@ -90,7 +89,7 @@ export default function CategoriasPage() {
         </div>
       </header>
 
-      {/* Main Content */}
+      {}
       <div className="container mx-auto px-4 py-8">
         <Link
           href="/"
@@ -102,7 +101,7 @@ export default function CategoriasPage() {
 
         <h1 className="text-4xl font-bold text-gray-800 mb-8">Explorar por Categorías</h1>
 
-        {/* Category Filter */}
+        {/* filtro */}
         <div className="mb-8">
           <div className="flex flex-wrap gap-3">
             <button
@@ -134,7 +133,7 @@ export default function CategoriasPage() {
           </div>
         </div>
 
-        {/* Products Grid */}
+        {/* grid para productos */}
         {loading ? (
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent mx-auto"></div>

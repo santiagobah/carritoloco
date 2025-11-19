@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { CreditCard, Lock, ArrowLeft, CheckCircle } from 'lucide-react';
 
-// Algoritmo de Luhn para validar tarjetas de crédito
+// Algoritmo de Luhn para que las tarjetas que se metan sean verdaderamente válidas
 function validateCardLuhn(cardNumber: string): boolean {
   const digits = cardNumber.replace(/\s/g, '');
   if (!/^\d+$/.test(digits)) return false;
@@ -46,16 +46,16 @@ export default function CheckoutPage() {
   const [success, setSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
-    // Datos personales
+    // información personasl
     fullName: '',
     email: '',
     phone: '',
-    // Dirección
+    // doirección:
     address: '',
     city: '',
     state: '',
     zipCode: '',
-    // Tarjeta
+    // datos de la tarjeta:
     cardNumber: '',
     cardName: '',
     expiryDate: '',
@@ -64,7 +64,6 @@ export default function CheckoutPage() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // ✅ CORRECCIÓN: La redirección debe ir dentro de useEffect para no fallar en el servidor
   useEffect(() => {
     if (cart.length === 0 && !success) {
       router.push('/carrito');
@@ -74,17 +73,16 @@ export default function CheckoutPage() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    // Formateo especial para número de tarjeta
     if (name === 'cardNumber') {
       const formatted = value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
       setFormData(prev => ({ ...prev, [name]: formatted }));
     }
-    // Formateo para fecha de expiración
+
     else if (name === 'expiryDate') {
       const formatted = value.replace(/\D/g, '').replace(/(\d{2})(\d{0,2})/, '$1/$2').substr(0, 5);
       setFormData(prev => ({ ...prev, [name]: formatted }));
     }
-    // CVV solo números
+    // CVV que solo acepta números
     else if (name === 'cvv') {
       const formatted = value.replace(/\D/g, '').substr(0, 4);
       setFormData(prev => ({ ...prev, [name]: formatted }));
@@ -93,7 +91,7 @@ export default function CheckoutPage() {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
 
-    // Limpiar error al escribir
+    // Limpiar error
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -143,7 +141,7 @@ export default function CheckoutPage() {
 
     setProcessing(true);
 
-    // Simular procesamiento de pago
+    // Simular el pago
     setTimeout(() => {
       setSuccess(true);
       setProcessing(false);
@@ -156,7 +154,7 @@ export default function CheckoutPage() {
     }, 2000);
   };
 
-  // Si no hay items y no es éxito, mostramos null mientras el useEffect redirige
+  // Si no hay items y no es éxito, mostramos null
   if (cart.length === 0 && !success) {
     return null;
   }
@@ -197,10 +195,10 @@ export default function CheckoutPage() {
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8">Finalizar Compra</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Formulario */}
+          {/* datos */}
           <div className="lg:col-span-2">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Información Personal */}
+              {/* info personal */}
               <div className="bg-white rounded-xl shadow-md p-6">
                 <h2 className="text-xl font-bold text-gray-800 mb-4">Información Personal</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -216,7 +214,7 @@ export default function CheckoutPage() {
                       className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                         errors.fullName ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-orange-500'
                       }`}
-                      placeholder="Juan Pérez García"
+                      placeholder="Emiliano Luna Casablanca"
                     />
                     {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
                   </div>
@@ -233,7 +231,7 @@ export default function CheckoutPage() {
                       className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                         errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-orange-500'
                       }`}
-                      placeholder="correo@ejemplo.com"
+                      placeholder="furros@suit.com"
                     />
                     {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                   </div>
@@ -257,7 +255,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Dirección de Envío */}
+              {/* dirección */}
               <div className="bg-white rounded-xl shadow-md p-6">
                 <h2 className="text-xl font-bold text-gray-800 mb-4">Dirección de Envío</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -332,7 +330,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Información de Pago */}
+              {/* pago */}
               <div className="bg-white rounded-xl shadow-md p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Lock size={24} className="text-green-600" />
@@ -449,7 +447,7 @@ export default function CheckoutPage() {
             </form>
           </div>
 
-          {/* Resumen */}
+          {}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-md p-6 sticky top-4">
               <h2 className="text-xl font-bold text-gray-800 mb-4">Resumen del Pedido</h2>
@@ -490,7 +488,7 @@ export default function CheckoutPage() {
                   <span className="text-sm font-medium">Pago 100% Seguro</span>
                 </div>
                 <p className="text-xs text-gray-500">
-                  Tus datos están protegidos con encriptación SSL de 256 bits
+                  Tus datos están protegidos
                 </p>
               </div>
             </div>

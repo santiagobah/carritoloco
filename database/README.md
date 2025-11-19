@@ -3,14 +3,14 @@
 ## Quick Setup
 
 ```bash
-# 1. Create database
+# Crear la base de datos
 psql -U postgres -c "DROP DATABASE IF EXISTS carritoloco;"
 psql -U postgres -c "CREATE DATABASE carritoloco;"
 
-# 2. Run schema
+# levantarla
 psql -U postgres -d carritoloco -f database/schema.sql
 
-# 3. Load initial data
+# cargar los primeros datos
 psql -U postgres -d carritoloco -f database/seed.sql
 ```
 

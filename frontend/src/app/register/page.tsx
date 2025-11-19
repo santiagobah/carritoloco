@@ -76,7 +76,7 @@ export default function RegisterPage() {
                     onChange={(e) => setFormData({...formData, name_p: e.target.value})}
                     required
                     className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                    placeholder="Juan"
+                    placeholder="Emiliano"
                   />
                 </div>
               </div>
@@ -91,7 +91,7 @@ export default function RegisterPage() {
                   onChange={(e) => setFormData({...formData, ap_pat: e.target.value})}
                   required
                   className="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                  placeholder="Pérez"
+                  placeholder="Luna"
                 />
               </div>
             </div>
@@ -105,7 +105,7 @@ export default function RegisterPage() {
                 value={formData.ap_mat}
                 onChange={(e) => setFormData({...formData, ap_mat: e.target.value})}
                 className="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="López"
+                placeholder="Casablanca"
               />
             </div>
 
@@ -123,7 +123,7 @@ export default function RegisterPage() {
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   required
                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                  placeholder="tu@email.com"
+                  placeholder="luna@hotmail.com"
                 />
               </div>
             </div>

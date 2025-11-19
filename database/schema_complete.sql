@@ -1,9 +1,4 @@
--- ================================================
--- CARRITO LOCO - COMPLETE PRODUCTION DATABASE SCHEMA
--- Full-Stack POS System with Multi-Branch, Inventory, Suppliers & Scrapers
--- ================================================
 
--- Drop all tables in correct order
 DROP TABLE IF EXISTS pos_cash_movements CASCADE;
 DROP TABLE IF EXISTS pos_items CASCADE;
 DROP TABLE IF EXISTS pos_sales CASCADE;
@@ -26,9 +21,7 @@ DROP TABLE IF EXISTS user_pass CASCADE;
 DROP TABLE IF EXISTS personas CASCADE;
 DROP TABLE IF EXISTS branches CASCADE;
 
--- ================================================
--- BRANCHES (Multi-sucursal)
--- ================================================
+
 CREATE TABLE branches (
     branch_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -41,9 +34,6 @@ CREATE TABLE branches (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- PERSONAS (Users/People)
--- ================================================
 CREATE TABLE personas (
     person_id SERIAL PRIMARY KEY,
     name_p VARCHAR(50) NOT NULL,
@@ -56,9 +46,7 @@ CREATE TABLE personas (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- ROLES
--- ================================================
+
 CREATE TABLE roles (
     role_id SERIAL PRIMARY KEY,
     role_name VARCHAR(50) NOT NULL UNIQUE,
@@ -67,9 +55,7 @@ CREATE TABLE roles (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- USER AUTHENTICATION
--- ================================================
+
 CREATE TABLE user_pass (
     person_id INT REFERENCES personas(person_id) ON DELETE CASCADE UNIQUE,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -79,9 +65,7 @@ CREATE TABLE user_pass (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- USER ROLES (Many-to-Many)
--- ================================================
+
 CREATE TABLE user_roles (
     person_id INT REFERENCES personas(person_id) ON DELETE CASCADE,
     role_id INT REFERENCES roles(role_id) ON DELETE CASCADE,
@@ -89,9 +73,7 @@ CREATE TABLE user_roles (
     PRIMARY KEY (person_id, role_id)
 );
 
--- ================================================
--- SUPPLIERS
--- ================================================
+
 CREATE TABLE suppliers (
     supplier_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -108,9 +90,7 @@ CREATE TABLE suppliers (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- CATEGORIES
--- ================================================
+
 CREATE TABLE categories (
     cat_id SERIAL PRIMARY KEY,
     name_cat VARCHAR(50) NOT NULL UNIQUE,
@@ -120,9 +100,6 @@ CREATE TABLE categories (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- PRODUCTS
--- ================================================
 CREATE TABLE products (
     prod_id SERIAL PRIMARY KEY,
     name_pr VARCHAR(100) NOT NULL,
@@ -144,9 +121,7 @@ CREATE TABLE products (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- BARCODES
--- ================================================
+
 CREATE TABLE barcodes (
     barcode_id SERIAL PRIMARY KEY,
     prod_id INT REFERENCES products(prod_id) ON DELETE CASCADE,
@@ -155,9 +130,7 @@ CREATE TABLE barcodes (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- INVENTORY (Stock by Branch)
--- ================================================
+
 CREATE TABLE inventory (
     inventory_id SERIAL PRIMARY KEY,
     prod_id INT REFERENCES products(prod_id) ON DELETE CASCADE,
@@ -171,26 +144,22 @@ CREATE TABLE inventory (
     UNIQUE(prod_id, branch_id)
 );
 
--- ================================================
--- INVENTORY MOVEMENTS (Kardex)
--- ================================================
+
 CREATE TABLE inventory_movements (
     movement_id SERIAL PRIMARY KEY,
     prod_id INT REFERENCES products(prod_id),
     branch_id INT REFERENCES branches(branch_id),
-    movement_type VARCHAR(20) NOT NULL, -- 'IN', 'OUT', 'TRANSFER', 'ADJUSTMENT', 'SALE', 'RETURN'
+    movement_type VARCHAR(20) NOT NULL, 
     quantity INT NOT NULL,
     cost_price DECIMAL(10, 2),
-    reference_type VARCHAR(50), -- 'PURCHASE_ORDER', 'SALE', 'POS_SALE', 'ADJUSTMENT'
+    reference_type VARCHAR(50), 
     reference_id INT,
     notes TEXT,
     created_by INT REFERENCES personas(person_id),
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- SUPPLIER PRICES (Web Scraper Data)
--- ================================================
+
 CREATE TABLE supplier_prices (
     price_id SERIAL PRIMARY KEY,
     prod_id INT REFERENCES products(prod_id) ON DELETE CASCADE,
@@ -203,9 +172,7 @@ CREATE TABLE supplier_prices (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- COMPETITOR PRICES (Web Scraper Data)
--- ================================================
+
 CREATE TABLE competitor_prices (
     comp_price_id SERIAL PRIMARY KEY,
     prod_id INT REFERENCES products(prod_id) ON DELETE CASCADE,
@@ -219,15 +186,12 @@ CREATE TABLE competitor_prices (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- PURCHASE ORDERS
--- ================================================
 CREATE TABLE purchase_orders (
     po_id SERIAL PRIMARY KEY,
     po_number VARCHAR(50) UNIQUE NOT NULL,
     supplier_id INT REFERENCES suppliers(supplier_id),
     branch_id INT REFERENCES branches(branch_id),
-    status VARCHAR(20) DEFAULT 'DRAFT', -- DRAFT, SENT, RECEIVED, CANCELLED
+    status VARCHAR(20) DEFAULT 'DRAFT', 
     total DECIMAL(10, 2) DEFAULT 0.00,
     tax DECIMAL(10, 2) DEFAULT 0.00,
     grand_total DECIMAL(10, 2) DEFAULT 0.00,
@@ -239,9 +203,7 @@ CREATE TABLE purchase_orders (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- PURCHASE ORDER ITEMS
--- ================================================
+
 CREATE TABLE purchase_order_items (
     po_item_id SERIAL PRIMARY KEY,
     po_id INT REFERENCES purchase_orders(po_id) ON DELETE CASCADE,
@@ -252,9 +214,7 @@ CREATE TABLE purchase_order_items (
     subtotal DECIMAL(10, 2) GENERATED ALWAYS AS (quantity * unit_price) STORED
 );
 
--- ================================================
--- SALES (Online Sales)
--- ================================================
+
 CREATE TABLE sales (
     sale_id SERIAL PRIMARY KEY,
     person_id INT REFERENCES personas(person_id) ON DELETE SET NULL,
@@ -268,9 +228,6 @@ CREATE TABLE sales (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- SALE ITEMS
--- ================================================
 CREATE TABLE sale_items (
     item_id SERIAL PRIMARY KEY,
     sale_id INT REFERENCES sales(sale_id) ON DELETE CASCADE,
@@ -283,9 +240,6 @@ CREATE TABLE sale_items (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- CASH REGISTER
--- ================================================
 CREATE TABLE cash_register (
     register_id SERIAL PRIMARY KEY,
     branch_id INT REFERENCES branches(branch_id),
@@ -295,15 +249,12 @@ CREATE TABLE cash_register (
     closing_cash DECIMAL(10, 2),
     expected_cash DECIMAL(10, 2),
     difference DECIMAL(10, 2),
-    status VARCHAR(20) DEFAULT 'OPEN', -- OPEN, CLOSED
+    status VARCHAR(20) DEFAULT 'OPEN', 
     opened_at TIMESTAMP DEFAULT NOW(),
     closed_at TIMESTAMP,
     notes TEXT
 );
 
--- ================================================
--- POS SALES
--- ================================================
 CREATE TABLE pos_sales (
     pos_sale_id SERIAL PRIMARY KEY,
     register_id INT REFERENCES cash_register(register_id),
@@ -317,14 +268,11 @@ CREATE TABLE pos_sales (
     payment_method VARCHAR(50) DEFAULT 'cash',
     payment_received DECIMAL(10, 2),
     change_given DECIMAL(10, 2),
-    status VARCHAR(20) DEFAULT 'COMPLETED', -- COMPLETED, REFUNDED, CANCELLED
+    status VARCHAR(20) DEFAULT 'COMPLETED', 
     refund_reason TEXT,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- POS ITEMS
--- ================================================
 CREATE TABLE pos_items (
     pos_item_id SERIAL PRIMARY KEY,
     pos_sale_id INT REFERENCES pos_sales(pos_sale_id) ON DELETE CASCADE,
@@ -336,13 +284,10 @@ CREATE TABLE pos_items (
     subtotal DECIMAL(10, 2) GENERATED ALWAYS AS (quantity * unit_price - discount) STORED
 );
 
--- ================================================
--- POS CASH MOVEMENTS
--- ================================================
 CREATE TABLE pos_cash_movements (
     movement_id SERIAL PRIMARY KEY,
     register_id INT REFERENCES cash_register(register_id),
-    movement_type VARCHAR(20) NOT NULL, -- SALE, REFUND, DEPOSIT, WITHDRAWAL, OPENING, CLOSING
+    movement_type VARCHAR(20) NOT NULL, 
     amount DECIMAL(10, 2) NOT NULL,
     reference_type VARCHAR(50),
     reference_id INT,
@@ -351,9 +296,6 @@ CREATE TABLE pos_cash_movements (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
--- ================================================
--- INDEXES FOR PERFORMANCE
--- ================================================
 CREATE INDEX idx_products_cat_id ON products(cat_id);
 CREATE INDEX idx_products_sku ON products(sku);
 CREATE INDEX idx_inventory_prod_branch ON inventory(prod_id, branch_id);
@@ -370,11 +312,6 @@ CREATE INDEX idx_cash_register_status ON cash_register(status);
 CREATE INDEX idx_user_pass_email ON user_pass(email);
 CREATE INDEX idx_user_roles_person ON user_roles(person_id);
 
--- ================================================
--- TRIGGERS
--- ================================================
-
--- Update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -392,7 +329,6 @@ FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_purchase_orders_updated_at BEFORE UPDATE ON purchase_orders
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Auto-calculate subtotal in sale_items
 CREATE OR REPLACE FUNCTION calculate_sale_item_subtotal()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -404,12 +340,10 @@ $$ language 'plpgsql';
 CREATE TRIGGER auto_calculate_sale_subtotal BEFORE INSERT OR UPDATE ON sale_items
 FOR EACH ROW EXECUTE FUNCTION calculate_sale_item_subtotal();
 
--- Update inventory on POS sale
 CREATE OR REPLACE FUNCTION update_inventory_on_pos_sale()
 RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' AND NEW.status = 'COMPLETED' THEN
-        -- Decrease inventory
         UPDATE inventory
         SET quantity = quantity - (
             SELECT SUM(quantity)
@@ -417,8 +351,6 @@ BEGIN
             WHERE pos_sale_id = NEW.pos_sale_id AND prod_id = inventory.prod_id
         )
         WHERE branch_id = NEW.branch_id;
-
-        -- Record movement
         INSERT INTO inventory_movements (prod_id, branch_id, movement_type, quantity, reference_type, reference_id, created_by)
         SELECT prod_id, NEW.branch_id, 'OUT', -quantity, 'POS_SALE', NEW.pos_sale_id, NEW.cashier_id
         FROM pos_items

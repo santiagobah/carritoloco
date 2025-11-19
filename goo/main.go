@@ -40,13 +40,13 @@ func salesHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Printf("⚠️ No .env file found or error loading it: %v", err)
+		log.Printf("no .env: %v", err)
 	}
 
 	if err := db.Connect(); err != nil {
-		log.Fatalf("❌ Error connecting to PostgreSQL DB: %v", err)
+		log.Fatalf("no postgres: %v", err)
 	}
-	fmt.Println("✅ Conexión exitosa a PostgreSQL")
+	fmt.Println("postgres listo!")
 
 	http.HandleFunc("/api/products", productsHandler)
 	http.HandleFunc("/api/product", productHandler)
@@ -56,6 +56,6 @@ func main() {
 	if port == "" {
 		port = "4001"
 	}
-	fmt.Printf("🚀 POS backend corriendo en http://localhost:%s\n", port)
+	fmt.Printf("back en http://localhost:%s\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

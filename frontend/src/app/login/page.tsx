@@ -20,13 +20,12 @@ export default function LoginPage() {
     console.log("1. Iniciando proceso de login...");
 
     try {
-      // Intentamos loguear
+      // intento de login
       await login(email, password);
       
       console.log("2. Login exitoso según el contexto. Redirigiendo...");
       
-      // 🚀 SOLUCIÓN NUCLEAR: Forzamos la navegación directa
-      // Esto recarga la página y nos lleva al dashboard sí o sí.
+      // recargar la página para ir al dashboard pq si no no se pq se me traba, es como forzarla
       window.location.href = '/dashboard';
 
     } catch (err: any) {

@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-// GetInventoryByBranch gets inventory for a specific branch
+// inventario de una categoría en esepecífico, es ocmo un filtro
 func GetInventoryByBranch(w http.ResponseWriter, r *http.Request) {
 	branchIDStr := r.URL.Query().Get("branch_id")
 	if branchIDStr == "" {
@@ -48,7 +48,7 @@ func GetInventoryByBranch(w http.ResponseWriter, r *http.Request) {
 		CategoryName *string `json:"category_name"`
 		MinStock     int     `json:"min_stock"`
 		ReorderPoint int     `json:"reorder_point"`
-		Status       string  `json:"status"` // OK, LOW, CRITICAL
+		Status       string  `json:"status"`
 	}
 
 	var items []InventoryItem
@@ -64,7 +64,7 @@ func GetInventoryByBranch(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Determine status
+		//status
 		if item.AvailableQuantity <= item.MinStock {
 			item.Status = "CRITICAL"
 		} else if item.AvailableQuantity <= item.ReorderPoint {
@@ -80,7 +80,7 @@ func GetInventoryByBranch(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(items)
 }
 
-// GetInventoryMovements gets inventory movements (Kardex)
+// movimientos registrados
 func GetInventoryMovements(w http.ResponseWriter, r *http.Request) {
 	prodIDStr := r.URL.Query().Get("prod_id")
 	branchIDStr := r.URL.Query().Get("branch_id")
@@ -153,7 +153,7 @@ func GetInventoryMovements(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(movements)
 }
 
-// AdjustInventory adjusts inventory manually
+// inventario
 func AdjustInventory(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -163,7 +163,7 @@ func AdjustInventory(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		ProdID    int     `json:"prod_id"`
 		BranchID  int     `json:"branch_id"`
-		Quantity  int     `json:"quantity"` // Can be positive or negative
+		Quantity  int     `json:"quantity"` // negativo/positivo
 		CostPrice float64 `json:"cost_price,omitempty"`
 		Notes     string  `json:"notes"`
 	}
@@ -182,7 +182,7 @@ func AdjustInventory(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Rollback()
 
-	// Update or create inventory record
+	// actualizar inventario
 	_, err = tx.Exec(`
 		INSERT INTO inventory (prod_id, branch_id, quantity)
 		VALUES ($1, $2, $3)
@@ -195,7 +195,6 @@ func AdjustInventory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Record movement
 	movementType := "IN"
 	if req.Quantity < 0 {
 		movementType = "OUT"
@@ -226,7 +225,7 @@ func AdjustInventory(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// TransferInventory transfers inventory between branches
+// transfers entre ramas
 func TransferInventory(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -234,11 +233,11 @@ func TransferInventory(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req struct {
-		ProdID        int    `json:"prod_id"`
-		FromBranchID  int    `json:"from_branch_id"`
-		ToBranchID    int    `json:"to_branch_id"`
-		Quantity      int    `json:"quantity"`
-		Notes         string `json:"notes"`
+		ProdID       int    `json:"prod_id"`
+		FromBranchID int    `json:"from_branch_id"`
+		ToBranchID   int    `json:"to_branch_id"`
+		Quantity     int    `json:"quantity"`
+		Notes        string `json:"notes"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -248,7 +247,7 @@ func TransferInventory(w http.ResponseWriter, r *http.Request) {
 
 	userID := r.Context().Value("user_id").(int)
 
-	// Check if source has enough stock
+	// checar si si hay disponible
 	var availableQty int
 	err := db.DB.QueryRow(`
 		SELECT available_quantity FROM inventory
@@ -276,7 +275,7 @@ func TransferInventory(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Rollback()
 
-	// Decrease from source
+	// restar al inventario
 	_, err = tx.Exec(`
 		UPDATE inventory
 		SET quantity = quantity - $1
@@ -288,7 +287,7 @@ func TransferInventory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Increase to destination
+	// increase a donde va
 	_, err = tx.Exec(`
 		INSERT INTO inventory (prod_id, branch_id, quantity)
 		VALUES ($1, $2, $3)
@@ -301,7 +300,7 @@ func TransferInventory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Record movements
+	// registrar lo que sucede
 	_, err = tx.Exec(`
 		INSERT INTO inventory_movements (
 			prod_id, branch_id, movement_type, quantity,
@@ -340,7 +339,7 @@ func TransferInventory(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// GetLowStockAlerts gets products with low stock
+// productos con poco stock
 func GetLowStockAlerts(w http.ResponseWriter, r *http.Request) {
 	branchIDStr := r.URL.Query().Get("branch_id")
 

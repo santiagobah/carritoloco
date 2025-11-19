@@ -1,7 +1,6 @@
-✅ Conectado a PostgreSQL
-✅ Conexión exitosa a PostgreSQL
-🚀 POS Backend completo corriendo en http://localhost:4001
-📋 Endpoints disponibles:
+postgres listo
+back en http://localhost:4001
+endpoints:
    POS: /api/pos/*
    Inventory: /api/inventory/*
    Suppliers: /api/suppliers/*

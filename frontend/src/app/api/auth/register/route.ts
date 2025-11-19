@@ -18,7 +18,6 @@ export async function POST(request: NextRequest) {
 
     const { email, password, name_p, ap_pat, ap_mat, sell, buy } = validation.data;
 
-    // Check if user exists
     const existingUser = await query(
       'SELECT email FROM user_pass WHERE email = $1',
       [email]
@@ -31,10 +30,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash password
+    // Hash contrraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert persona
     const personResult = await query(
       `INSERT INTO personas (name_p, ap_pat, ap_mat, sell, buy)
        VALUES ($1, $2, $3, $4, $5)
@@ -44,14 +42,12 @@ export async function POST(request: NextRequest) {
 
     const personId = personResult.rows[0].person_id;
 
-    // Insert credentials
     await query(
       `INSERT INTO user_pass (person_id, email, password, is_admin)
        VALUES ($1, $2, $3, $4)`,
       [personId, email, hashedPassword, false]
     );
 
-    // Create token
     const token = await createToken({
       userId: personId,
       email: email,
@@ -71,7 +67,7 @@ export async function POST(request: NextRequest) {
       },
     }, { status: 201 });
   } catch (error: any) {
-    console.error('Register error:', error);
+    console.error('error:', error);
     return NextResponse.json(
       { error: 'Error al registrar usuario', details: error.message },
       { status: 500 }

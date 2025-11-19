@@ -70,17 +70,17 @@ export default function Home() {
     addToCart({
       prod_id: product.prod_id,
       name_pr: product.name_pr,
-      // 🔧 CORRECCIÓN 1: Convertimos a Number para evitar errores en el carrito
+      // number pq si no marca error del cliente pq la base de datos mandaría un string como tal
       sale_price: Number(product.sale_price || product.cost_price),
       image_url: product.image_url,
       barcode: product.barcode
     });
 
-    // Mostrar notificación
-    setToastMessage(`✅ ${product.name_pr} agregado al carrito`);
+    // confirmación:
+    setToastMessage(`${product.name_pr} agregado al carrito`);
     setShowToast(true);
 
-    // Ocultar después de 3 segundos
+    // Ocultar en 3 segundos:
     setTimeout(() => {
       setShowToast(false);
     }, 3000);
@@ -88,17 +88,17 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">
-      {/* Header Responsive */}
+      {/* Header */}
       <header className="bg-white shadow-lg sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo */}
+            {/* logo */}
             <Link href="/" className="flex items-center gap-2 text-orange-600 hover:text-orange-700 transition">
               <ShoppingCart className="w-8 h-8 md:w-10 md:h-10" />
               <h1 className="text-xl md:text-2xl lg:text-3xl font-bold">Carrito Loco</h1>
             </Link>
 
-            {/* Desktop Search */}
+            {/* busqueda */}
             <div className="hidden md:flex flex-1 max-w-xl mx-8">
               <div className="relative w-full">
                 <input
@@ -112,7 +112,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Desktop Navigation */}
+            {/* moverse */}
             <nav className="hidden lg:flex items-center gap-4">
               <Link
                 href="/productos"
@@ -154,7 +154,7 @@ export default function Home() {
               </Link>
             </nav>
 
-            {/* Mobile Menu Button */}
+            {/* boton de menu para panrallas mas pequeñas */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="lg:hidden text-gray-700 hover:text-orange-600 transition p-2"
@@ -163,7 +163,7 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Mobile Search */}
+          {/* busqueda pantallas pequeñas */}
           <div className="md:hidden mt-4">
             <div className="relative w-full">
               <input
@@ -177,7 +177,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Mobile Menu */}
+          {/* menu (en esencia) pantallas pequeñas */}
           {menuOpen && (
             <nav className="lg:hidden mt-4 pb-4 flex flex-col gap-2 border-t pt-4">
               <Link
@@ -229,7 +229,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero Section - Responsive */}
+      {/* intro */}
       <section className="bg-gradient-to-r from-orange-500 to-red-600 text-white py-12 md:py-20 lg:py-24">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 animate-fade-in">
@@ -257,7 +257,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section - Responsive Grid */}
+      {/* grid oara datos, NO para productos */}
       <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 md:mb-12 text-gray-800">
@@ -267,23 +267,23 @@ export default function Home() {
             <div className="text-center p-6 md:p-8 rounded-xl hover:shadow-2xl transition transform hover:-translate-y-2 bg-gradient-to-br from-orange-50 to-orange-100">
               <TrendingUp className="mx-auto mb-4 text-orange-600" size={48} />
               <h3 className="text-xl font-bold mb-2 text-gray-800">Mejores Precios</h3>
-              <p className="text-gray-600">Precios competitivos garantizados en todos nuestros productos</p>
+              <p className="text-gray-600">Precios competitivos en todos los productos anunciados</p>
             </div>
             <div className="text-center p-6 md:p-8 rounded-xl hover:shadow-2xl transition transform hover:-translate-y-2 bg-gradient-to-br from-red-50 to-red-100">
               <Package className="mx-auto mb-4 text-red-600" size={48} />
               <h3 className="text-xl font-bold mb-2 text-gray-800">Envío Rápido</h3>
-              <p className="text-gray-600">Entregas en tiempo récord a todo México</p>
+              <p className="text-gray-600">Entregas rapidísimas</p>
             </div>
             <div className="text-center p-6 md:p-8 rounded-xl hover:shadow-2xl transition transform hover:-translate-y-2 bg-gradient-to-br from-yellow-50 to-yellow-100 md:col-span-2 lg:col-span-1">
               <Star className="mx-auto mb-4 text-yellow-600" size={48} />
               <h3 className="text-xl font-bold mb-2 text-gray-800">Calidad Garantizada</h3>
-              <p className="text-gray-600">Productos certificados de la más alta calidad</p>
+              <p className="text-gray-600">Sólo productos originales</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Category Filter - Responsive */}
+      {/* filtro resp */}
       <section className="container mx-auto px-4 py-6 md:py-8">
         <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-gray-800 text-center">
           Explora por Categoría
@@ -315,7 +315,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Products Grid - Responsive */}
+      {/* grid resp */}
       <main className="container mx-auto px-4 pb-12 md:pb-16">
         <h3 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-gray-800 text-center">
           {selectedCategory ? "Productos Filtrados" : "Productos Destacados"}
@@ -347,7 +347,7 @@ export default function Home() {
                     {product.description || "Producto de alta calidad"}
                   </p>
                   <div className="flex items-center justify-between mb-3">
-                    {/* 🔧 CORRECCIÓN 2: Convertimos a Number antes de usar toFixed */}
+                    {/* otra vez number */}
                     <span className="text-2xl md:text-3xl font-bold text-orange-600">
                       ${Number(product.sale_price || product.cost_price).toFixed(2)}
                     </span>
@@ -385,7 +385,7 @@ export default function Home() {
         )}
       </main>
 
-      {/* Footer - Responsive */}
+      {/* footer res */}
       <footer className="bg-gray-900 text-white py-8 md:py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -417,20 +417,20 @@ export default function Home() {
             <div>
               <h4 className="font-bold mb-4 text-lg">Contacto</h4>
               <p className="text-gray-400 text-sm md:text-base">
-                📧 contacto@carritoloco.com<br />
+                <br />
                 📞 +52 55 1234 5678<br />
-                📍 Ciudad de México
+                📍 Almacén Ciudad de México
               </p>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-xs md:text-sm">
-            <p className="mb-2">&copy; 2025 Carrito Loco. Todos los derechos reservados.</p>
-            <p>Santiago Bañuelos Hernández - Matrícula 0265706 - Proyecto Final Desarrollo Web</p>
+            <p className="mb-2">&copy; 2025 Carrito Loco. Derechos reservados.</p>
+            <p>Realizado por: Santiago Bañuelos Hernández</p>
           </div>
         </div>
       </footer>
 
-      {/* Toast Notification */}
+      {/* toast? */}
       {showToast && (
         <div className="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl z-50 animate-slide-up">
           <p className="font-bold">{toastMessage}</p>

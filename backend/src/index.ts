@@ -18,13 +18,13 @@ const pool = new Pool({
 
 // pruebaa:
 app.get("/", (req, res) => {
-  res.send("API funcionando correctamente");
+  res.send("API ya sirve");
 });
 
 app.get("/api/products", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM products");
-    res.json(result.rows); // 👈 esto devuelve un arreglo
+    res.json(result.rows); 
 } catch (err: any) {
   console.error("Error en consulta:", err);
   res.status(500).json({ error: err.message });
@@ -32,4 +32,4 @@ app.get("/api/products", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`✅ Servidor backend en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`back en puerto: ${PORT}`));

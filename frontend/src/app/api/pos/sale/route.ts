@@ -4,42 +4,37 @@ import { query } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
   try {
-    // 1. Verificar que el usuario sea cajero o admin
     const user = await getCurrentUser(request);
     if (!user) {
       return NextResponse.json({ error: 'No autenticado' }, { status: 401 });
     }
 
     const body = await request.json();
-    // Ahora recibimos paymentMethod (CARD o CASH)
     const { items, total, paymentMethod = 'CASH' } = body;
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: 'El carrito está vacío' }, { status: 400 });
     }
 
-    // 2. Generar número de ticket único
     const ticketNumber = `TICKET-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    // 3. Insertar la Venta (Cabecera)
     const saleResult = await query(
       `INSERT INTO pos_sales (branch_id, cashier_id, ticket_number, subtotal, tax, total, status, payment_method)
        VALUES ($1, $2, $3, $4, $5, $6, 'COMPLETED', $7)
        RETURNING pos_sale_id`,
       [
-        1,              // branch_id (Matriz)
-        user.userId,    // cashier_id
-        ticketNumber,   // ticket_number
-        total,          // subtotal
-        0,              // tax
-        total,          // total
-        paymentMethod   // 'CASH' o 'CARD'
+        1,             
+        user.userId,    
+        ticketNumber,   
+        total,          
+        0,              
+        total,          
+        paymentMethod   
       ]
     );
 
     const saleId = saleResult.rows[0].pos_sale_id;
 
-    // 4. Insertar los Items
     for (const item of items) {
       const prodRes = await query(
         `SELECT p.prod_id, p.name_pr FROM products p 

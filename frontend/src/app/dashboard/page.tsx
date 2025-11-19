@@ -45,7 +45,7 @@ export default function DashboardPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* User Info Card */}
+        {/* tarjeta */}
         <div className="bg-white rounded-lg shadow p-6 mb-8">
           <div className="flex items-center gap-4">
             <div className="bg-orange-100 p-4 rounded-full">
@@ -63,7 +63,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Quick Actions */}
+        {/* acciones rapidas */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {user.sell && (
             <>
@@ -130,7 +130,7 @@ export default function DashboardPage() {
           </Link>
         </div>
 
-        {/* Account Actions */}
+        {/* opciones para modificar tu ceunta */}
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Configuración de Cuenta</h2>
           <div className="space-y-3">

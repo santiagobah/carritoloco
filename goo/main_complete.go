@@ -22,7 +22,7 @@ func enableCORS(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Wrapper to add CORS to handlers
+// agrega CORS a los handlers
 func corsHandler(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		enableCORS(w, r)
@@ -33,19 +33,19 @@ func corsHandler(handler http.HandlerFunc) http.HandlerFunc {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Printf("⚠️  No .env file found or error loading it: %v", err)
+		log.Printf("no .env: %v", err)
 	}
 
 	if err := db.Connect(); err != nil {
-		log.Fatalf("❌ Error connecting to PostgreSQL DB: %v", err)
+		log.Fatalf("error para conectar a postgres!: %v", err)
 	}
-	fmt.Println("✅ Conexión exitosa a PostgreSQL")
+	fmt.Println("postgres listo")
 
-	// === PRODUCTS ===
+	// productos
 	http.HandleFunc("/api/products", corsHandler(handlers.GetAllProducts))
 	http.HandleFunc("/api/product", corsHandler(handlers.GetProductByBarcode))
 
-	// === POS ENDPOINTS ===
+	// endpoints
 	http.HandleFunc("/api/pos/open-cash", corsHandler(handlers.OpenCashRegister))
 	http.HandleFunc("/api/pos/close-cash", corsHandler(handlers.CloseCashRegister))
 	http.HandleFunc("/api/pos/sale", corsHandler(handlers.CreatePOSSale))
@@ -53,14 +53,14 @@ func main() {
 	http.HandleFunc("/api/pos/refund", corsHandler(handlers.RefundPOSSale))
 	http.HandleFunc("/api/pos/register-report", corsHandler(handlers.GetCashRegisterReport))
 
-	// === INVENTORY ===
+	// inventario
 	http.HandleFunc("/api/inventory/by-branch", corsHandler(handlers.GetInventoryByBranch))
 	http.HandleFunc("/api/inventory/movements", corsHandler(handlers.GetInventoryMovements))
 	http.HandleFunc("/api/inventory/adjust", corsHandler(handlers.AdjustInventory))
 	http.HandleFunc("/api/inventory/transfer", corsHandler(handlers.TransferInventory))
 	http.HandleFunc("/api/inventory/low-stock", corsHandler(handlers.GetLowStockAlerts))
 
-	// === SUPPLIERS & PURCHASES ===
+	// compras y más
 	http.HandleFunc("/api/suppliers", corsHandler(handlers.GetAllSuppliers))
 	http.HandleFunc("/api/suppliers/create", corsHandler(handlers.CreateSupplier))
 	http.HandleFunc("/api/purchase-orders", corsHandler(handlers.GetPurchaseOrders))
@@ -69,19 +69,19 @@ func main() {
 	http.HandleFunc("/api/supplier-prices", corsHandler(handlers.GetSupplierPrices))
 	http.HandleFunc("/api/competitor-prices", corsHandler(handlers.GetCompetitorPrices))
 
-	// === REPORTS ===
+	// reportes
 	http.HandleFunc("/api/reports/sales", corsHandler(handlers.GetSalesReport))
 	http.HandleFunc("/api/reports/inventory", corsHandler(handlers.GetInventoryReport))
 
-	// === SALES (existing) ===
+	// ventas
 	http.HandleFunc("/api/sales", corsHandler(handlers.CreateSale))
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "4001"
 	}
-	fmt.Printf("🚀 POS Backend completo corriendo en http://localhost:%s\n", port)
-	fmt.Println("📋 Endpoints disponibles:")
+	fmt.Printf(" back en http://localhost:%s\n", port)
+	fmt.Println("endpoints:")
 	fmt.Println("   POS: /api/pos/*")
 	fmt.Println("   Inventory: /api/inventory/*")
 	fmt.Println("   Suppliers: /api/suppliers/*")

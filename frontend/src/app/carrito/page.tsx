@@ -46,7 +46,7 @@ export default function CarritoPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Cart Items */}
+          {/* carrito */}
           <div className="lg:col-span-2">
             <div className="space-y-4">
               {cart.map((item) => (
@@ -55,7 +55,7 @@ export default function CarritoPage() {
                   className="bg-white rounded-xl shadow-md p-4 md:p-6 hover:shadow-lg transition"
                 >
                   <div className="flex gap-4">
-                    {/* Product Image */}
+                    {/* foto */}
                     <div className="w-24 h-24 md:w-32 md:h-32 bg-gray-100 rounded-lg flex-shrink-0 flex items-center justify-center">
                       {item.image_url ? (
                         <img
@@ -68,7 +68,7 @@ export default function CarritoPage() {
                       )}
                     </div>
 
-                    {/* Product Info */}
+                    {/* info cosa */}
                     <div className="flex-1 min-w-0">
                       <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2 truncate">
                         {item.name_pr}
@@ -81,7 +81,7 @@ export default function CarritoPage() {
                       </p>
 
                       <div className="flex flex-wrap items-center gap-4">
-                        {/* Quantity Controls */}
+                        {}
                         <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
                           <button
                             onClick={() => updateQuantity(item.prod_id, item.quantity - 1)}
@@ -100,7 +100,7 @@ export default function CarritoPage() {
                           </button>
                         </div>
 
-                        {/* Subtotal */}
+                        {/* total */}
                         <div className="flex-1 text-right">
                           <p className="text-sm text-gray-600">Subtotal:</p>
                           <p className="text-xl font-bold text-gray-800">
@@ -108,7 +108,7 @@ export default function CarritoPage() {
                           </p>
                         </div>
 
-                        {/* Remove Button */}
+                        {/* eliminar - quitar */}
                         <button
                           onClick={() => removeFromCart(item.prod_id)}
                           className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"
@@ -124,7 +124,7 @@ export default function CarritoPage() {
             </div>
           </div>
 
-          {/* Order Summary */}
+          {/* reusmen orden */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-md p-6 sticky top-4">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Resumen de Compra</h2>
@@ -167,13 +167,12 @@ export default function CarritoPage() {
                 Continuar comprando
               </Link>
 
-              {/* Security Badges */}
+              {/* seguridad */}
               <div className="mt-6 pt-6 border-t">
                 <p className="text-sm text-gray-500 text-center mb-2">Compra 100% segura</p>
                 <div className="flex justify-center gap-4 text-xs text-gray-400">
-                  <span>🔒 SSL</span>
-                  <span>✓ Verified</span>
-                  <span>💳 Secure</span>
+                  <span>Pago seguro</span>
+                  <span>Pago verificado</span>
                 </div>
               </div>
             </div>

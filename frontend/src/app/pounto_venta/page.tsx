@@ -18,17 +18,17 @@ export default function POSPage() {
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   
-  // Estado para mostrar el Portal de Pagos
+  // para mostrar la ventana de pagos:
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-  // Lógica del Carrito
+  // "fila" de articulos de compras:
   const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!barcode.trim()) return;
     setLoading(true);
 
     try {
-      // Llamada a la API interna de búsqueda
+      // entrada de la API
       const res = await fetch(`/api/pos/search?code=${barcode}`);
       const data = await res.json();
 
@@ -77,19 +77,19 @@ export default function POSPage() {
     setTotal(newItems.reduce((sum, i) => sum + (Number(i.price) * i.qty), 0));
   };
 
-  // 1. Al dar click en "Ir a Pagar", abrimos el Portal
+  // "ir a pagar" abre los pagos:
   const openPaymentPortal = () => {
     if (items.length === 0) return;
     setShowPaymentModal(true);
   };
 
-  // 2. Cuando el usuario da click en "PAGAR" dentro del portal
+  // "pagar" en el portal
   const handlePaymentSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Evitar recarga
+    e.preventDefault();
     setProcessing(true);
 
     try {
-      // Enviamos la venta con método 'CARD'
+      // enviar la venta
       const res = await fetch('/api/pos/sale', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -99,11 +99,10 @@ export default function POSPage() {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        setShowPaymentModal(false); // Cerrar modal
-        setSuccess(`Ticket #${data.ticket} generado correctamente`);
-        setItems([]); // Limpiar carrito
+        setShowPaymentModal(false);
+        setSuccess(`Ticket #${data.ticket} generado`);
+        setItems([]); // vaciar lista
         setTotal(0);
-        // Ocultar mensaje de éxito después de 3 segundos
         setTimeout(() => setSuccess(null), 3000);
       } else {
         alert(data.error || "Error al procesar la venta");
@@ -124,7 +123,7 @@ export default function POSPage() {
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800">Punto de Venta</h1>
         </header>
 
-        {/* Mensaje de Éxito */}
+        {/* mensaje final */}
         {success && (
           <div className="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative flex items-center gap-2 animate-pulse">
             <CheckCircle className="w-5 h-5" />
@@ -157,7 +156,7 @@ export default function POSPage() {
           </form>
         </div>
 
-        {/* Tabla de Productos */}
+        {/* productos mostrados */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden min-h-[400px] flex flex-col">
           <div className="overflow-x-auto flex-1">
             <table className="w-full text-left">
@@ -206,7 +205,7 @@ export default function POSPage() {
             </table>
           </div>
 
-          {/* Footer con Totales y Botón Cobrar */}
+          {/* boton para cobrar y totales */}
           <div className="bg-gray-50 p-6 border-t border-gray-200">
             <div className="flex justify-between items-center mb-6">
               <span className="text-gray-500 text-lg">Artículos: <span className="font-bold text-gray-800">{items.reduce((a, b) => a + b.qty, 0)}</span></span>
@@ -228,12 +227,12 @@ export default function POSPage() {
         </div>
       </div>
 
-      {/* --- PORTAL DE PAGOS (MODAL) --- */}
+      {/* portal de pagos */}
       {showPaymentModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-scale-up">
             
-            {/* Header del Portal (Estilo Tarjeta) */}
+            {/* header de los pagos */}
             <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-6 text-white relative">
               <button 
                 onClick={() => setShowPaymentModal(false)}
@@ -252,7 +251,7 @@ export default function POSPage() {
               <div className="mt-4 text-xs text-gray-500 font-mono">REF: POS-{Date.now().toString().slice(-6)}</div>
             </div>
 
-            {/* Formulario del Portal */}
+            {/* campos de pagos */}
             <div className="p-8">
               <form onSubmit={handlePaymentSubmit} className="space-y-4">
                 <div>

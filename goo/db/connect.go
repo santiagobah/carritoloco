@@ -36,6 +36,6 @@ func Connect() error {
 		return err
 	}
 	DB = db
-	fmt.Println("✅ Conectado a PostgreSQL")
+	fmt.Println("conexión a postgres lista")
 	return nil
 }

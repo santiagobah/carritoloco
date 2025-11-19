@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       categoryId: result.rows[0].cat_id,
     }, { status: 201 });
   } catch (error: any) {
-    console.error('Create category error:', error);
+    console.error('error: ', error);
     return NextResponse.json(
       { error: 'Error al crear categoría', details: error.message },
       { status: 500 }

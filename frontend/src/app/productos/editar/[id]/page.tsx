@@ -50,7 +50,7 @@ export default function EditarProductoPage() {
         });
       }
     })
-    .catch(err => console.error('Error loading data:', err))
+    .catch(err => console.error('error:', err))
     .finally(() => setLoadingProduct(false));
   }, [user, prodId]);
 

@@ -20,12 +20,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Desestructuramos los datos del formulario
     const { name_pr, description, cat_id, price, stock, barcode, image_url } = validation.data;
 
-    // 1. INSERTAR EL PRODUCTO
-    // Corrección: Usamos 'sale_price' y 'cost_price' en lugar de 'price'.
-    // Quitamos 'stock' de aquí porque va en otra tabla.
     const productResult = await query(
       `INSERT INTO products (name_pr, description, cat_id, person_id, sale_price, cost_price, image_url)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -35,17 +31,14 @@ export async function POST(request: NextRequest) {
         description || null, 
         cat_id, 
         user.userId, 
-        price, // Se guarda como Precio de Venta
-        price, // Se guarda temporalmente también como Costo (puedes cambiarlo luego)
+        price, 
+        price, 
         image_url || null
       ]
     );
 
     const prodId = productResult.rows[0].prod_id;
 
-    // 2. INSERTAR EL STOCK (INVENTARIO)
-    // El esquema usa la tabla 'inventory' ligada a una sucursal (branch_id).
-    // Usamos branch_id = 1 (Matriz) por defecto.
     if (stock !== undefined) {
       await query(
         `INSERT INTO inventory (prod_id, branch_id, quantity)
@@ -55,7 +48,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3. INSERTAR EL CÓDIGO DE BARRAS
     if (barcode) {
       await query(
         `INSERT INTO barcodes (prod_id, barcode) VALUES ($1, $2)`,
@@ -70,7 +62,7 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error: any) {
-    console.error('Create product error:', error);
+    console.error('error:', error);
     return NextResponse.json(
       { error: 'Error al crear producto', details: error.message },
       { status: 500 }
