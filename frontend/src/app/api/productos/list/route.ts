@@ -9,14 +9,27 @@ export async function GET(request: NextRequest) {
     const user_id = searchParams.get('user_id');
 
     let sql = `
-      SELECT p.prod_id, p.name_pr, p.description, p.cat_id, p.person_id,
-             p.price, p.stock, p.image_url, p.is_active, p.created_at,
-             c.name_cat, b.barcode,
-             per.name_p, per.ap_pat
+      SELECT
+        p.prod_id,
+        p.name_pr,
+        p.description,
+        p.cat_id,
+        p.person_id,
+        p.sale_price,
+        p.cost_price,
+        p.image_url,
+        p.is_active,
+        p.created_at,
+        c.name_cat,
+        b.barcode,
+        per.name_p,
+        per.ap_pat,
+        COALESCE(SUM(i.quantity), 0) as stock
       FROM products p
-      LEFT JOIN categor c ON p.cat_id = c.cat_id
-      LEFT JOIN barcodes b ON p.prod_id = b.prod_id
+      LEFT JOIN categories c ON p.cat_id = c.cat_id
+      LEFT JOIN barcodes b ON p.prod_id = b.prod_id AND b.is_primary = TRUE
       LEFT JOIN personas per ON p.person_id = per.person_id
+      LEFT JOIN inventory i ON p.prod_id = i.prod_id
       WHERE p.is_active = TRUE
     `;
 
@@ -30,7 +43,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      sql += ` AND (p.name_pr ILIKE $${paramCount} OR p.description ILIKE $${paramCount})`;
+      sql += ` AND (p.name_pr ILIKE $${paramCount} OR p.description ILIKE $${paramCount} OR c.name_cat ILIKE $${paramCount})`;
       params.push(`%${search}%`);
       paramCount++;
     }
@@ -41,7 +54,7 @@ export async function GET(request: NextRequest) {
       paramCount++;
     }
 
-    sql += ' ORDER BY p.created_at DESC';
+    sql += ' GROUP BY p.prod_id, c.name_cat, b.barcode, per.name_p, per.ap_pat ORDER BY p.created_at DESC';
 
     const result = await query(sql, params);
 

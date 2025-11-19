@@ -37,24 +37,33 @@ export default function Home() {
   const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
-    Promise.all([
-      fetch("/api/productos/list").then(res => res.json()),
-      fetch("/api/categorias").then(res => res.json())
-    ])
-    .then(([productsData, categoriesData]) => {
-      setProducts(productsData.products || []);
-      setCategories(categoriesData.categories || []);
-    })
-    .catch(err => console.error("Error al obtener datos:", err))
-    .finally(() => setLoading(false));
+    fetch("/api/categorias")
+      .then(res => res.json())
+      .then(categoriesData => {
+        setCategories(categoriesData.categories || []);
+      })
+      .catch(err => console.error("Error al obtener categorías:", err));
   }, []);
 
-  const filteredProducts = products.filter(p => {
-    const matchesCategory = !selectedCategory || p.cat_id === selectedCategory;
-    const matchesSearch = !searchQuery || p.name_pr.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  useEffect(() => {
+    setLoading(true);
 
+    const params = new URLSearchParams();
+    if (selectedCategory) params.append('cat_id', selectedCategory.toString());
+    if (searchQuery) params.append('search', searchQuery);
+
+    const url = `/api/productos/list${params.toString() ? '?' + params.toString() : ''}`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(productsData => {
+        setProducts(productsData.products || []);
+      })
+      .catch(err => console.error("Error al obtener productos:", err))
+      .finally(() => setLoading(false));
+  }, [selectedCategory, searchQuery]);
+
+  const filteredProducts = products;
   const featuredProducts = products.slice(0, 8);
 
   const handleAddToCart = (product: Product) => {

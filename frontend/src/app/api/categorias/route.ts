@@ -6,7 +6,7 @@ import { categorySchema } from '@/lib/validations';
 export async function GET() {
   try {
     const result = await query(
-      'SELECT cat_id, name_cat, description FROM categor ORDER BY name_cat'
+      'SELECT cat_id, name_cat, description FROM categories ORDER BY name_cat'
     );
 
     return NextResponse.json({
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     const { name_cat, description } = validation.data;
 
     const result = await query(
-      'INSERT INTO categor (name_cat, description) VALUES ($1, $2) RETURNING cat_id',
+      'INSERT INTO categories (name_cat, description) VALUES ($1, $2) RETURNING cat_id',
       [name_cat, description || null]
     );
 
