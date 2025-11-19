@@ -1,0 +1,596 @@
+
+> frontend@0.1.0 dev
+> next dev --webpack
+
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/santiagob19/package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /Users/santiagob19/Documents/GitHub/carritoloco/frontend/package-lock.json
+
+   ▲ Next.js 16.0.1 (webpack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.222:3000
+
+ ✓ Starting...
+ ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+ ✓ Ready in 3.1s
+ GET / 200 in 3.3s (compile: 3.1s, proxy.ts: 61ms, render: 98ms)
+ GET /api/auth/me 401 in 1305ms (compile: 1292ms, render: 13ms)
+Database query error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/categorias/route.ts:8:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+List categories error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/categorias/route.ts:8:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+ GET /api/categorias 500 in 1428ms (compile: 1292ms, render: 135ms)
+Database query error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/productos/list/route.ts:46:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+List products error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/productos/list/route.ts:46:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+ GET /api/productos/list 500 in 1508ms (compile: 1295ms, render: 213ms)
+ GET / 200 in 267ms (compile: 238ms, proxy.ts: 11ms, render: 18ms)
+ GET /register 200 in 361ms (compile: 340ms, proxy.ts: 6ms, render: 16ms)
+Database query error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/productos/list/route.ts:46:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+List products error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/productos/list/route.ts:46:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+ GET /api/productos/list 500 in 175ms (compile: 75ms, render: 101ms)
+Database query error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/productos/list/route.ts:46:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+List products error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/productos/list/route.ts:46:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+ GET /api/productos/list 500 in 318ms (compile: 79ms, render: 239ms)
+Database query error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/categorias/route.ts:8:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+List categories error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/categorias/route.ts:8:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+ GET /api/categorias 500 in 393ms (compile: 77ms, render: 316ms)
+Database query error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/categorias/route.ts:8:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+List categories error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/categorias/route.ts:8:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+ GET /api/categorias 500 in 474ms (compile: 75ms, render: 399ms)
+ GET /productos 200 in 394ms (compile: 367ms, proxy.ts: 9ms, render: 17ms)
+ GET /products/default.jpg 404 in 521ms (compile: 470ms, render: 51ms)
+ ⨯ The requested resource isn't a valid image for /products/default.jpg received null
+Database query error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/productos/list/route.ts:46:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+List products error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/productos/list/route.ts:46:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+ GET /api/productos/list 500 in 163ms (compile: 62ms, render: 102ms)
+Database query error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/productos/list/route.ts:46:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+List products error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/productos/list/route.ts:46:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+ GET /api/productos/list 500 in 243ms (compile: 64ms, render: 179ms)
+Database query error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/categorias/route.ts:8:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+List categories error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/categorias/route.ts:8:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+ GET /api/categorias 500 in 317ms (compile: 62ms, render: 255ms)
+Database query error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/categorias/route.ts:8:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+List categories error: error: role "postgres" does not exist
+    at async query (src/lib/db.ts:29:17)
+    at async GET (src/app/api/categorias/route.ts:8:20)
+  27 |   const pool = getPool();
+  28 |   try {
+> 29 |     const res = await pool.query(text, params);
+     |                 ^
+  30 |     return res;
+  31 |   } catch (error) {
+  32 |     console.error('Database query error:', error); {
+  length: 100,
+  severity: 'FATAL',
+  code: '28000',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'miscinit.c',
+  line: '755',
+  routine: 'InitializeSessionUserId'
+}
+ GET /api/categorias 500 in 395ms (compile: 62ms, render: 333ms)
+[?25h

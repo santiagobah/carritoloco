@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Datos inválidos', details: validation.error.errors },
+        { error: 'Datos inválidos', details: validation.error.issues },
         { status: 400 }
       );
     }

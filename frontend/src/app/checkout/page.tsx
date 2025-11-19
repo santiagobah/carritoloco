@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -63,6 +63,13 @@ export default function CheckoutPage() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // ✅ CORRECCIÓN: La redirección debe ir dentro de useEffect para no fallar en el servidor
+  useEffect(() => {
+    if (cart.length === 0 && !success) {
+      router.push('/carrito');
+    }
+  }, [cart, success, router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -149,8 +156,8 @@ export default function CheckoutPage() {
     }, 2000);
   };
 
+  // Si no hay items y no es éxito, mostramos null mientras el useEffect redirige
   if (cart.length === 0 && !success) {
-    router.push('/carrito');
     return null;
   }
 

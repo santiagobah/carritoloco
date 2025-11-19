@@ -1,0 +1,11 @@
+✅ Conectado a PostgreSQL
+✅ Conexión exitosa a PostgreSQL
+🚀 POS Backend completo corriendo en http://localhost:4001
+📋 Endpoints disponibles:
+   POS: /api/pos/*
+   Inventory: /api/inventory/*
+   Suppliers: /api/suppliers/*
+   Purchase Orders: /api/purchase-orders/*
+   Reports: /api/reports/*
+2025/11/18 02:09:58 listen tcp :4001: bind: address already in use
+exit status 1
