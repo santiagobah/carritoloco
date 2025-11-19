@@ -33,6 +33,8 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     Promise.all([
@@ -54,6 +56,25 @@ export default function Home() {
   });
 
   const featuredProducts = products.slice(0, 8);
+
+  const handleAddToCart = (product: Product) => {
+    addToCart({
+      prod_id: product.prod_id,
+      name_pr: product.name_pr,
+      sale_price: product.sale_price || product.cost_price,
+      image_url: product.image_url,
+      barcode: product.barcode
+    });
+
+    // Mostrar notificación
+    setToastMessage(`✅ ${product.name_pr} agregado al carrito`);
+    setShowToast(true);
+
+    // Ocultar después de 3 segundos
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">
@@ -324,13 +345,7 @@ export default function Home() {
                     </span>
                   </div>
                   <button
-                    onClick={() => addToCart({
-                      prod_id: product.prod_id,
-                      name_pr: product.name_pr,
-                      sale_price: product.sale_price || product.cost_price,
-                      image_url: product.image_url,
-                      barcode: product.barcode
-                    })}
+                    onClick={() => handleAddToCart(product)}
                     className="w-full bg-orange-500 text-white py-2 md:py-3 rounded-lg font-bold hover:bg-orange-600 transition transform hover:scale-105 shadow"
                   >
                     Agregar al Carrito
@@ -403,6 +418,13 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Toast Notification */}
+      {showToast && (
+        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl z-50 animate-slide-up">
+          <p className="font-bold">{toastMessage}</p>
+        </div>
+      )}
     </div>
   );
 }
