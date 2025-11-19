@@ -46,6 +46,7 @@ services:
       - carritoloco-network
 
   # Frontend Next.js
+# Frontend Next.js
   frontend:
     build:
       context: ./frontend
@@ -53,11 +54,23 @@ services:
     container_name: carritoloco-frontend
     restart: always
     environment:
+      # 1. Para que el navegador encuentre al backend (desde fuera)
       NEXT_PUBLIC_API_URL: http://localhost:8080
+      
+      # 2. IMPORTANTE: Para que Next.js encuentre a la Base de Datos (desde dentro de Docker)
+      # Aquí usamos "postgres" (el nombre del servicio) en lugar de "localhost"
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASS: postgres123
+      DB_NAME: carritoloco
+      DB_PORT: 5432
+      # Por si tu código usa la URL completa:
+      DATABASE_URL: postgres://postgres:postgres123@postgres:5432/carritoloco
     ports:
       - "3000:3000"
     depends_on:
       - backend
+      - postgres
     networks:
       - carritoloco-network
 

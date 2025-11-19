@@ -20,7 +20,7 @@ export async function createToken(payload: JWTPayload): Promise<string> {
     .sign(JWT_SECRET);
   return token;
 }
-
+ 
 export async function verifyToken(token: string): Promise<JWTPayload | null> {
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
@@ -50,7 +50,8 @@ export async function setAuthCookie(token: string) {
   const cookieStore = await cookies();
   cookieStore.set('auth-token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    // 🚨 CAMBIO IMPORTANTE: Forzamos false para que funcione en Docker Local (HTTP)
+    secure: false, 
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 7,
     path: '/',

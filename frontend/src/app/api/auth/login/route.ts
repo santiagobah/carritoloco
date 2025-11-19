@@ -36,11 +36,13 @@ function checkRateLimit(email: string): boolean {
 }
 
 export async function POST(request: NextRequest) {
+  console.log('🔵 INICIO DE INTENTO DE LOGIN'); // LOG INICIO
   try {
     const body = await request.json();
     const validation = loginSchema.safeParse(body);
 
     if (!validation.success) {
+      console.log('🟡 Validación fallida:', validation.error.issues);
       return NextResponse.json(
         { error: 'Datos inválidos', details: validation.error.issues },
         { status: 400 }
@@ -48,14 +50,18 @@ export async function POST(request: NextRequest) {
     }
 
     const { email, password } = validation.data;
+    console.log(`🔵 Intentando loguear a: ${email}`);
 
     if (!checkRateLimit(email)) {
+      console.log('🔴 Rate limit excedido');
       return NextResponse.json(
         { error: 'Demasiados intentos. Intente más tarde.' },
         { status: 429 }
       );
     }
 
+    // 1. BUSCAR USUARIO
+    console.log('🔵 Ejecutando query a DB...');
     const result = await query(
       `SELECT p.person_id, p.name_p, p.ap_pat, p.ap_mat,
               up.email, up.password, up.is_admin
@@ -65,25 +71,34 @@ export async function POST(request: NextRequest) {
       [email]
     );
 
+    console.log(`🔵 Resultado DB: ${result.rows.length} usuarios encontrados.`);
+
     if (result.rows.length === 0) {
+      console.log('🔴 Usuario NO encontrado en la tabla user_pass/personas');
       return NextResponse.json(
-        { error: 'Email o contraseña incorrectos' },
+        { error: 'Email o contraseña incorrectos (Usuario no existe)' },
         { status: 401 }
       );
     }
 
     const user = result.rows[0];
+    console.log('🔵 Usuario encontrado. Verificando password...');
+    
+    // 2. VERIFICAR CONTRASEÑA
     const isValidPassword = await bcrypt.compare(password, user.password);
+    console.log(`🔵 Resultado Password: ${isValidPassword ? 'CORRECTO' : 'INCORRECTO'}`);
 
     if (!isValidPassword) {
+      console.log('🔴 Contraseña no coincide con el hash');
       return NextResponse.json(
-        { error: 'Email o contraseña incorrectos' },
+        { error: 'Email o contraseña incorrectos (Password mal)' },
         { status: 401 }
       );
     }
 
     loginAttempts.delete(email);
 
+    console.log('🟢 Login exitoso. Generando token...');
     const token = await createToken({
       userId: user.person_id,
       email: user.email,
@@ -103,7 +118,11 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error: any) {
-    console.error('Login error:', error);
+    console.log('🔥 ==========================================');
+    console.log('🔥 ERROR CRÍTICO EN LOGIN:', error);
+    console.log('🔥 Mensaje:', error.message);
+    console.log('🔥 Host DB:', process.env.DB_HOST);
+    console.log('🔥 ==========================================');
     return NextResponse.json(
       { error: 'Error al iniciar sesión', details: error.message },
       { status: 500 }

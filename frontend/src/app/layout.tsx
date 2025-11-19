@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SessionProvider } from "@/contexts/SessionContext";
 import { CartProvider } from "@/contexts/CartContext";
+import BotonHome from "@/app/reciclar/botonhome"; // ✅ Importamos el botón home
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,6 +33,8 @@ export default function RootLayout({
         <SessionProvider>
           <CartProvider>
             {children}
+            {/* ✅ Inyectamos el botón aquí para que flote sobre todo */}
+            <BotonHome />
           </CartProvider>
         </SessionProvider>
       </body>

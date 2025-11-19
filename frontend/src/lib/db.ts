@@ -5,11 +5,19 @@ let pool: Pool | null = null;
 export function getPool(): Pool {
   if (!pool) {
     pool = new Pool({
+      // 🚀 CAMBIO CLAVE: Docker inyectará "postgres" aquí gracias al docker-compose.
+      // Si corres en local sin Docker, usará "localhost".
       host: process.env.DB_HOST || 'localhost',
+      
       user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASS || 'admin',
+      
+      // 🔑 IMPORTANTE: Cambié el default a 'postgres123' para coincidir con tu DB real
+      password: process.env.DB_PASS || 'postgres123',
+      
       database: process.env.DB_NAME || 'carritoloco',
       port: Number(process.env.DB_PORT) || 5432,
+      
+      // Configuración de rendimiento
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,
@@ -17,6 +25,8 @@ export function getPool(): Pool {
 
     pool.on('error', (err) => {
       console.error('Unexpected error on idle client', err);
+      // Si el pool muere, es mejor matar el proceso para que Docker lo reinicie
+      process.exit(-1);
     });
   }
 

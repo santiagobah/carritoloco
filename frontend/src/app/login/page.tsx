@@ -17,11 +17,21 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
+    console.log("1. Iniciando proceso de login...");
+
     try {
+      // Intentamos loguear
       await login(email, password);
+      
+      console.log("2. Login exitoso según el contexto. Redirigiendo...");
+      
+      // 🚀 SOLUCIÓN NUCLEAR: Forzamos la navegación directa
+      // Esto recarga la página y nos lleva al dashboard sí o sí.
+      window.location.href = '/dashboard';
+
     } catch (err: any) {
+      console.error("Error en login:", err);
       setError(err.message || 'Error al iniciar sesión');
-    } finally {
       setLoading(false);
     }
   };
@@ -52,73 +62,46 @@ export default function LoginPage() {
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 Correo electrónico
               </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-                  placeholder="tu@email.com"
-                />
-              </div>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                placeholder="tu@email.com"
+              />
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Contraseña
               </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-                  placeholder="••••••••"
-                />
-              </div>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                placeholder="••••••••"
+              />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-orange-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+              {loading ? 'Redirigiendo...' : 'Iniciar sesión'}
             </button>
           </form>
-
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">¿No tienes cuenta?</span>
-              </div>
-            </div>
-          </div>
-
+          
           <div className="mt-6 text-center">
-            <Link href="/register" className="text-orange-600 hover:text-orange-700 font-medium">
-              Crear una cuenta nueva
+            <Link href="/" className="text-gray-600 hover:text-gray-800 text-sm">
+              ← Volver al inicio
             </Link>
           </div>
-        </div>
-
-        <div className="text-center mt-6">
-          <Link href="/" className="text-gray-600 hover:text-gray-800 text-sm">
-            ← Volver al inicio
-          </Link>
         </div>
       </div>
     </div>

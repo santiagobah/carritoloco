@@ -70,7 +70,8 @@ export default function Home() {
     addToCart({
       prod_id: product.prod_id,
       name_pr: product.name_pr,
-      sale_price: product.sale_price || product.cost_price,
+      // 🔧 CORRECCIÓN 1: Convertimos a Number para evitar errores en el carrito
+      sale_price: Number(product.sale_price || product.cost_price),
       image_url: product.image_url,
       barcode: product.barcode
     });
@@ -346,8 +347,9 @@ export default function Home() {
                     {product.description || "Producto de alta calidad"}
                   </p>
                   <div className="flex items-center justify-between mb-3">
+                    {/* 🔧 CORRECCIÓN 2: Convertimos a Number antes de usar toFixed */}
                     <span className="text-2xl md:text-3xl font-bold text-orange-600">
-                      ${product.sale_price?.toFixed(2) || product.cost_price?.toFixed(2)}
+                      ${Number(product.sale_price || product.cost_price).toFixed(2)}
                     </span>
                     <span className="text-xs md:text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
                       {product.stock} disponibles

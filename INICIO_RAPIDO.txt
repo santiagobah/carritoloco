@@ -1,56 +1,0 @@
-═══════════════════════════════════════════════════════════════
-🚀 CARRITOLOCO - INICIO RÁPIDO
-═══════════════════════════════════════════════════════════════
-
-COPIA Y PEGA ESTE COMANDO EN TU TERMINAL:
-
-cd /home/user/carritoloco && bash setup-and-run.sh
-
-───────────────────────────────────────────────────────────────
-
-Esto hará:
-✅ Configurar PostgreSQL (drop/create database)
-✅ Aplicar schema completo (20+ tablas)
-✅ Cargar datos de prueba (usuarios, productos, inventario)
-✅ Instalar dependencias Go
-✅ Instalar dependencias npm
-✅ Iniciar backend Go en http://localhost:8080
-✅ Iniciar frontend Next.js en http://localhost:3000
-
-───────────────────────────────────────────────────────────────
-
-DESPUÉS DE EJECUTAR:
-
-1. Abre tu navegador en: http://localhost:3000
-
-2. Inicia sesión con:
-   📧 Email: admin@carrito.com
-   🔑 Password: password123
-
-3. ¡Listo! Ya puedes usar el sistema POS completo.
-
-───────────────────────────────────────────────────────────────
-
-OTROS USUARIOS DE PRUEBA:
-
-manager@carrito.com  - Gerente (todas las sucursales)
-cashier1@carrito.com - Cajero (Sucursal Centro)
-cashier2@carrito.com - Cajero (Sucursal Norte)
-inv1@carrito.com     - Inventarios
-
-Todos tienen password: password123
-
-───────────────────────────────────────────────────────────────
-
-PARA DETENER LOS SERVICIOS:
-
-kill $(cat logs/backend.pid) $(cat logs/frontend.pid)
-
-───────────────────────────────────────────────────────────────
-
-VER LOGS EN TIEMPO REAL:
-
-Backend:  tail -f logs/backend.log
-Frontend: tail -f logs/frontend.log
-
-═══════════════════════════════════════════════════════════════
